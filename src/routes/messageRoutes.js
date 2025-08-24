@@ -1,9 +1,9 @@
 const express=require('express');
-const { save, sayHello } = require('../controllers/messageController');
+const { saveMessage, sayHello } = require('../controllers/messageController');
 const router=express.Router();
 
 
-router.post("/saveMessage", save);
+router.post("/saveMessage", saveMessage);
 router.get("/",sayHello);
 
 module.exports=router;

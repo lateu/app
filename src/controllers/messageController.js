@@ -1,18 +1,10 @@
 const Message = require('../models/GreetingModel');
 
 
-exports.save = async (req, res) => {
+exports.saveMessage = async (req, res) => {
   try {
     const newMessage = req.body;
-
-
-
    
-
-   
-
-    
-    
     
 
     return res.status(201).json({
