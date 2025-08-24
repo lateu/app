@@ -1,6 +1,6 @@
 const oracledb = require("oracledb");
 
-async function Message(message) {
+async function doGreeting(message) {
 let connection;
   try {
     connection = await oracledb.getConnection({
@@ -25,4 +25,4 @@ let connection;
   }
 }
 
-module.exports = { Message };
+module.exports = { doGreeting };
