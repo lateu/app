@@ -1,39 +1,31 @@
-const { expect } = require("chai");
-const sinon = require("sinon");
-const proxyquire = require("proxyquire");
 
-describe("Greeting Model - doGreeting (mocked)", function () {
-  let oracledbMock, greetingModel;
+const { doGreeting } = require("../models/GreetingModel");
+const oracledb = require("oracledb");
+const assert = require("assert");
 
-  beforeEach(() => {
-    // Mock the oracledb module
-    oracledbMock = {
-      BIND_OUT: "BIND_OUT",
-      NUMBER: "NUMBER",
-      DATE: "DATE",
-      getConnection: sinon.stub()
+describe("Greeting Model - doGreeting (mocked)", () => {
+  it("should save a greeting without hitting the real database", async () => {
+    // 🔹 Mock the connection object
+    const mockConnection = {
+      execute: async () => ({
+        outBinds: {
+          id: [1],
+          created_at: [new Date("2025-01-01")]
+        }
+      }),
+      commit: async () => {},
+      close: async () => {}
     };
 
-    // Inject the mock into the model
-    greetingModel = proxyquire("../models/GreetingModel", {
-      oracledb: oracledbMock
-    });
-  });
+    // 🔹 Mock oracledb.getConnection to return new fake connection
+    const getConnectionStub = async () => mockConnection;
+    oracledb.getConnection = getConnectionStub;
 
-  it("should save a greeting without hitting the real  database", async function () {
-    // Fake connection object
-    const fakeConnection = {
-      execute: sinon.stub().resolves({ outBinds: { id: [1], created_at: [new Date()] } }),
-      commit: sinon.stub().resolves(),
-      close: sinon.stub().resolves()
-    };
+    const message = "Hello Test!";
+    const result = await doGreeting(message);
 
-    oracledbMock.getConnection.resolves(fakeConnection);
-
-    const result = await greetingModel.doGreeting("Hello Mocked");
-
-    expect(result).to.have.property("id", 1);
-    expect(result).to.have.property("message", "Hello Mocked");
-    expect(result).to.have.property("created_at").that.is.a("date");
+    assert.strictEqual(result.id, 1);
+    assert.strictEqual(result.message, message);
+    assert.ok(result.created_at instanceof Date);
   });
 });
