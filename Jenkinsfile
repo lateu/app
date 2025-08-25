@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-cred-id') // set in Jenkins
+        //DOCKER_HUB_CREDENTIALS = credentials('docker-hub-cred-id') // set in Jenkins
         IMAGE_NAME = "rlateu/my-greeting-app"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
     }
