@@ -1,4 +1,5 @@
-agent any
+pipeline {
+    agent any
 
     stages {
         stage('Checkout') {
@@ -28,3 +29,4 @@ agent any
             echo "Tests failed! ❌"
         }
     }
+}
