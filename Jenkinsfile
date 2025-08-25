@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-cred-id') // set in Jenkins
+        IMAGE_NAME = "rlateu/my-greeting-app"
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -21,6 +27,14 @@ pipeline {
                   dir('src') {
                     sh 'npm test'
                    }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                dir('src') {
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                }
             }
         }
     }
