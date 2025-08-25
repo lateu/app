@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        //DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credential-id') // set in Jenkins
         IMAGE_NAME = "rlateu/my-greeting-app"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
     }
@@ -16,42 +15,42 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                 dir('src') {
-                   sh 'npm install'
-                 }
+                dir('src') {
+                    sh 'npm install'
+                }
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                  dir('src') {
+                dir('src') {
                     sh 'npm test'
-                   }
+                }
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 dir('src') {
-                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
 
-         stage('Push to Docker Hub') {
+        stage('Push to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credential-id',
-                                          usernameVariable: 'DOCKER_USER',
-                                          passwordVariable: 'DOCKER_PASS')]) {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-hub-credential-id',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
                     sh '''
-                          echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                          docker push ${IMAGE_NAME}:${IMAGE_TAG}
-                      '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                    '''
+                }
+            }
         }
-    }
-        }
-
-
     }
 
     post {
