@@ -10,13 +10,17 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                 dir('src') {
+                   sh 'npm install'
+                 }
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                sh 'npm test'
+                  dir('src') {
+                    sh 'npm test'
+                   }
             }
         }
     }
