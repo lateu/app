@@ -40,10 +40,14 @@ pipeline {
 
          stage('Push to Docker Hub') {
             steps {
-                sh """
-                    echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin
-                    docker push ${IMAGE_NAME}:${IMAGE_TAG}
-                """
+               withCredentials([usernamePassword(credentialsId: 'actual-credential-id', 
+                                  usernameVariable: 'DOCKER_USER', 
+                                  passwordVariable: 'DOCKER_PASS')]) {
+            sh """
+                   echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                   docker push ${IMAGE_NAME}:${IMAGE_TAG}
+               """
+}
             }
         }
 
