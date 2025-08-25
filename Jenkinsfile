@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        //DOCKER_HUB_CREDENTIALS = credentials('docker-hub-cred-id') // set in Jenkins
+        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credential-id') // set in Jenkins
         IMAGE_NAME = "rlateu/my-greeting-app"
         IMAGE_TAG = "${env.BUILD_NUMBER}"
     }
@@ -37,6 +37,17 @@ pipeline {
                 }
             }
         }
+
+         stage('Push to Docker Hub') {
+            steps {
+                sh """
+                    echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin
+                    docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                """
+            }
+        }
+
+
     }
 
     post {
