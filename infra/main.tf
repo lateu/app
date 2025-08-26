@@ -12,6 +12,7 @@ terraform {
 provider "aws" {
     #aws region used
   region = "us-east-1"
+  //profile = "demo-profile"
 }
 
 # Security Group: Allow SSH,and HTTP 
@@ -39,7 +40,7 @@ resource "aws_security_group" "ports_access_sg" {
 # create an EC2 Instance
 resource "aws_instance" "minikube_host" {
   ami           = "ami-0f9de6e2d2f067fca" # ubuntu 22.04
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   key_name      = "Richard-lateu-key-pair"  #  EC2 key pair name
 
   vpc_security_group_ids = [aws_security_group.ports_access_sg.id]
