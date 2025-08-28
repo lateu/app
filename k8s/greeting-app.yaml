@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: greeting-app
-        image: docker.io/rlateu/greeting-app:9
+        image: docker.io/rlateu/greeting-app:12
         ports:
         - containerPort: 8080
         envFrom:
