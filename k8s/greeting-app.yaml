@@ -14,11 +14,26 @@ spec:
     spec:
       containers:
       - name: greeting-app
-        image: docker.io/rlateu/greeting-app:5
+        image: docker.io/rlateu/greeting-app:6
         ports:
         - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 3
 
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
