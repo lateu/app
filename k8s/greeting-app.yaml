@@ -16,21 +16,21 @@ spec:
       - name: greeting-app
         image: docker.io/rlateu/greeting-app:9
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         envFrom:
         - configMapRef:
             name: greeting-config
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 80
+            port: 8080
           initialDelaySeconds: 5
           periodSeconds: 10
           failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /healthz
-            port: 80
+            port: 8080
           initialDelaySeconds: 5
           periodSeconds: 5
           failureThreshold: 3
@@ -48,4 +48,4 @@ spec:
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 80
+    targetPort: 8080
