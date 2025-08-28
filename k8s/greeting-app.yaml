@@ -17,6 +17,9 @@ spec:
         image: docker.io/rlateu/greeting-app:6
         ports:
         - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: greeting-config
         livenessProbe:
           httpGet:
             path: /healthz
