@@ -29,14 +29,6 @@ app.use(cors({
 }));
 
 
-// POST greeting message route
-app.post("/saveMessage", (req, res) => {
-  res.json({
-    message: "You sent:",
-    data: req.body
-  });
-});
-
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is listening on port:${PORT}`);
