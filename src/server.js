@@ -8,7 +8,7 @@ const app = express();
 
 
 // Get port from .env
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 //import routes
 var messageRoute = require('./routes/messageRoutes');
